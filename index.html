@@ -1,0 +1,157 @@
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Calcular Amostra</title>
+    <meta name="description" content="Programa que calcula amostra">
+    <meta name="keywords" content="calcular,amostra, amostragem, erro amostral ">
+    <meta name="author" content="Keven Rodrigo dos Santos Escovedo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--link online para testar-->
+<!-- https://calcularamostra-kevenescovedo.vercel.app/-->
+    <style>
+      .card-login {
+        padding: 30px 0 0 0;
+        width: 350px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+       
+        Calcular Amostra
+      </a>
+    </nav>
+
+    <div class="container">    
+      <div class="row">
+
+        <div class="card-login">
+          <div class="card">
+            <div class="card-header">
+              Encontre o número da Amostra
+            </div>
+            <div class="card-body">
+             <!-- action o action deve receber o arwuvio onde os dados serão enviados o destino do submit de um formulario-->
+              <form>
+                <div class="form-group">
+                  <input type="number" class="form-control" placeholder="Digite o tamanho da população" name="qtdpop" id="qtdpop">
+                </div>
+                <div class="form-group d-flex justify-content-center" style="display: flex;  flex-direction: column;">
+                   <p style="text-align: center;">Selecione o nível de confiança em %</p>
+                    <select class="form-select" aria-label="Selecione o Nível de confiança" name="nivconf" id="nivconf">
+                       
+                        <option selected value="1.65">90</option>
+                        <option value="1.96">95</option>
+                        <option value="2">95,5</option>
+                        <option value="2.57">99</option>
+                      </select>
+                  </div>
+                <div class="form-group">
+                  <input type="number" class="form-control" placeholder="Digite a prévia da proporção em %" name="prevporp" id="prevporp">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Digite o erro amostral em %" name="erroamostr" id="erroamostr">
+                  </div>
+               
+                
+                  
+                
+                
+                
+
+                <button class="btn btn-lg btn-info btn-block" type="button" onclick="calcularAmostra()">Calcular tamanho amostra</button>
+              </form>
+
+            </div>
+            <div id="resultado">
+
+            </div>
+            <div id="resultado2">
+
+            </div>
+          
+          </div>
+        </div>
+    </div>
+  </body>
+  <script>
+      //esta fubção vai ser executada quando o usuario clicar no botão
+      function calcularAmostra() {
+          //limpando os valores
+
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("resultado2").innerHTML = "";
+
+    //instanciando as variaveis
+       var tamanhoPopulacao = "";
+       var nivelConfianca = "";
+       var previaPorpocao = "";
+       var erroAmostral = "";
+       //atribuindo os valores dos inputs as variaveis antes declaradas
+       tamanhoPopulacao =  document.getElementById("qtdpop").value;
+       nivelConfianca =  document.getElementById("nivconf").value;
+       previaPorpocao =  document.getElementById("prevporp").value;
+       erroAmostral =  document.getElementById("erroamostr").value;
+       //trocando virgula pro ponto, caso o usuario digite uma virgula 
+       tamanhoPopulacao = tamanhoPopulacao.replace(",",".");
+       previaPorpocao = previaPorpocao.replace(",",".");
+       erroAmostral = erroAmostral.replace(",",".");
+       
+       //ele vai tentar calcular se algo der errado ele vai informar o usúario
+       try {
+           //se a porpoção não for informada o seu valor será de 50%
+           tamanhoPopulacao = parseFloat(tamanhoPopulacao);
+       if(previaPorpocao == "") {
+           previaPorpocao = 0.5;
+           
+       }
+       //convertendo os valores digitados e selecionados para float
+       else {
+           previaPorpocao = parseFloat(previaPorpocao)/100;
+           
+
+       }
+       erroAmostral = parseFloat(erroAmostral)/100;
+       
+       nivelConfianca = parseFloat(nivelConfianca);
+      
+       //fazendo o calculo
+       var resultnamostra = (tamanhoPopulacao * Math.pow(nivelConfianca,2) * previaPorpocao * (1 - previaPorpocao)) / (Math.pow(erroAmostral,2) * (tamanhoPopulacao - 1) + Math.pow(nivelConfianca,2) * previaPorpocao * (1- previaPorpocao))
+       if(!isNaN(resultnamostra)) {
+        var resultadoArredondado = Math.ceil(resultnamostra);
+       //trocando o ponto por virgula
+      
+       //convertendo para string
+       resultnamostra = resultnamostra.toString();
+       resultnamostra = resultnamostra.replace(".",",");
+        document.getElementById("resultado").innerHTML = "<div class='alert alert-primary' role='alert'>A amostra é "+ resultnamostra.toString() +"</div>";
+      //verifica se é o numero inteiro para mostrar o número aredondado , pois a amostra deve ser expresa em inteiro, indicando que o o usuário deve pesquisar 1 a mais para antender a parte decimal
+      resultnamostra = resultnamostra.replace(",",".");
+      if(!Number.isInteger(resultnamostra)) {
+        document.getElementById("resultado2").innerHTML = "<div class='alert alert-primary' role='alert'>Recomendamos que sua sua amostra seja "+ resultadoArredondado.toString() +" , já que o resultado supracitado, deu um número decimal</div>";
+      }
+       }
+       else {
+        document.getElementById("resultado").innerHTML = "<div class='alert alert-danger' role='alert'>Digite números válidos para calcular a amostra</div>";
+  
+       }
+     
+        //mostrando o resultado na tela
+     
+    }
+catch (e) {
+   // declarações para manipular quaisquer exceções
+   // passa o objeto de exceção para o manipulador de erro
+   document.getElementById("resultado").innerHTML = "<div class='alert alert-danger' role='alert'>Algo deu errado</div>";
+  
+}
+       
+      }
+  </script>
+</html>
