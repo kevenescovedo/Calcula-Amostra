@@ -6,80 +6,127 @@
     <meta name="description" content="Programa que calcula amostra">
     <meta name="keywords" content="calcular,amostra, amostragem, erro amostral ">
     <meta name="author" content="Keven Rodrigo dos Santos Escovedo">
+    <meta name="author" content="Flavio Fernando da Silva">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--link online para testar-->
 <!-- https://calcularamostra-kevenescovedo.vercel.app/-->
-    <style>
-      .card-login {
-        padding: 30px 0 0 0;
-        width: 350px;
-        margin: 0 auto;
-      }
-    </style>
+ <!--Feito por Keven Escovedo Rodrigo dos Santos Escovedo e Flavio Fernando da Silva -->
+ <style>
+  .card {
+      height: 550px;
+  }
+  
+  .card-login {
+      padding: 100px 0 0 0;
+      width: 350px;
+      margin: 0 auto;
+      text-align: center;
+  }
+  
+  nav {
+      display: flex !important;
+      justify-content: center !important;
+      background-color: #81259D !important;
+      height: 100px !important;
+  }
+  
+  nav a {
+      text-decoration: none !important;
+  }
+  
+  .card-header {
+      background-color: #ffffff !important;
+      color: #7D21A5 !important;
+  }
+  
+  button {
+      background-color: #B72FED !important;
+      border: 0px;
+  }
+  
+  .form-control {
+      color: #81259D !important;
+      border-color: #81259D !important;
+      box-shadow: none !important;
+  }
+  
+  label {
+      border: 10px !important;
+      padding-right: 113px;
+      color: #81259D !important;
+      margin-left: auto;
+  }
+  
+  .form-select {
+      color: #81259D !important;
+      border-color: #81259D !important;
+      outline: none !important;
+      border-radius: 5px !important;
+  }
+  
+  option {
+      color: #81259D !important;
+      border-color: #81259D !important;
+  }
+  
+  .btn {
+      color: white !important;
+      outline: none !important;
+      width: 310px !important;
+      height: 50px !important;
+  }
+  
+  .btn:hover {
+      background-color: #7D21A5 !important;
+  }
+</style>
+
   </head>
 
   <body>
-
-    <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-       
-        Calcular Amostra
-      </a>
+    <nav class="navbar navbar-dark">
+        <a class="navbar-brand" href="a">Calculadora de tamanho de amostra</a>
     </nav>
 
-    <div class="container">    
-      <div class="row">
+    <div class="container">
+        <div class="row">
 
-        <div class="card-login">
-          <div class="card">
-            <div class="card-header">
-              Encontre o número da Amostra
-            </div>
-            <div class="card-body">
-             <!-- action o action deve receber o arwuvio onde os dados serão enviados o destino do submit de um formulario-->
-              <form>
-                <div class="form-group">
-                  <input type="number" class="form-control" placeholder="Digite o tamanho da população" name="qtdpop" id="qtdpop">
+            <div class="card-login">
+                <div class="card">
+                    <div class="card-header" background-color="light-purple"> Professora, por que vem nesse humilde site buscar o número da amostra?
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Digite o tamanho da população" name="qtdpop" id="qtdpop">
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+
+                                <label for="Nível de Confiança">Grau de confiança</label>
+
+                                <select class="form-select" name="nivconf" id="nivconf">
+                                <option class="select-box" selected value="1.65" >90%</option>
+                                <option value="1.96">95%</option>
+                                <option value="2">95,5%</option>
+                                <option value="2.57">99%</option>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Prévia da proporpoção  (%)" name="prevporp" id="prevporp">
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Margem de erro (%)" name="erroamostr" id="erroamostr">
+                            </div>
+                            <button class="btn" type="button" onclick="calcularAmostra()">Calcular Tamanho da Amostra</button>
+                        </form>
+                    </div>
+                    <div id="resultado"></div>
+                    <div id="resultado2"></div>
                 </div>
-                <div class="form-group d-flex justify-content-center" style="display: flex;  flex-direction: column;">
-                   <p style="text-align: center;">Selecione o nível de confiança em %</p>
-                    <select class="form-select" aria-label="Selecione o Nível de confiança" name="nivconf" id="nivconf">
-                       
-                        <option selected value="1.65">90</option>
-                        <option value="1.96">95</option>
-                        <option value="2">95,5</option>
-                        <option value="2.57">99</option>
-                      </select>
-                  </div>
-                <div class="form-group">
-                  <input type="number" class="form-control" placeholder="Digite a prévia da proporção em %" name="prevporp" id="prevporp">
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Digite o erro amostral em %" name="erroamostr" id="erroamostr">
-                  </div>
-               
-                
-                  
-                
-                
-                
-
-                <button class="btn btn-lg btn-info btn-block" type="button" onclick="calcularAmostra()">Calcular tamanho amostra</button>
-              </form>
-
             </div>
-            <div id="resultado">
-
-            </div>
-            <div id="resultado2">
-
-            </div>
-          
-          </div>
         </div>
-    </div>
-  </body>
+</body>
   <script>
       //esta fubção vai ser executada quando o usuario clicar no botão
       function calcularAmostra() {
